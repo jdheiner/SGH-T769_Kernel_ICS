@@ -107,6 +107,16 @@ unsigned char *output_data;
 unsigned long free_mem_ptr;
 unsigned long free_mem_end_ptr;
 
+void *memcpy(void *dest, const void *src, size_t n)
+{
+	char *d = dest;
+	const char *s = src;
+	while (n--)
+		*d++ = *s++;
+
+	return dest;
+}
+
 #ifndef arch_error
 #define arch_error(x)
 #endif
