@@ -1342,8 +1342,16 @@ config MSM_DALRPC_TEST
 	help
 	  Exercises DAL RPC calls to QDSP6.
 
-config GPU_TURBO_BOOST
-	bool "Enable GPU Turbo mode from 266MHz to 320MHz"
+config BOOST_L2_BANDWIDTH
+	bool "Boost L2 Bandwidth"
+	default n
+
+config CPU_OVERCLOCKING
+	bool "Enable CPU Overclocking from 1.5GHz to 1.72GHz"
+	default n
+
+config GPU_OVERCLOCKING
+	bool "Enable GPU Overclocking from 266MHz to 320MHz"
 	default n
 
 config CPU_VOLTAGE_TABLE
