@@ -1354,6 +1354,10 @@ config GPU_OVERCLOCKING
 	bool "Enable GPU Overclocking from 266MHz to 320MHz"
 	default n
 
+config CPU_UNDERCLOCKING
+	bool "Enable Underclocking CPU to 1.5GHz and GPU to 200MHz"
+	default n
+
 config CPU_VOLTAGE_TABLE
 	bool "Enable CPU Voltage Table via sysfs for adjustements"
 	default n

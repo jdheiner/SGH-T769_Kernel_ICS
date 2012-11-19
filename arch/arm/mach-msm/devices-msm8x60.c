@@ -712,6 +712,15 @@ static struct msm_bus_vectors grp2d0_max_vectors[] = {
 		.ib = 1138500000U,
 	},
 };
+#elif CONFIG_CPU_UNDERCLOCKING
+static struct msm_bus_vectors grp2d0_max_vectors[] = {
+	{
+		.src = MSM_BUS_MASTER_GRAPHICS_2D_CORE0,
+		.dst = MSM_BUS_SLAVE_EBI_CH0,
+		.ab = 0,
+		.ib = 990000000U,
+	},
+};
 #else
 static struct msm_bus_vectors grp2d0_max_vectors[] = {
 	{
@@ -756,6 +765,15 @@ static struct msm_bus_vectors grp2d1_max_vectors[] = {
 		.dst = MSM_BUS_SLAVE_EBI_CH0,
 		.ab = 0,
 		.ib = 1138500000U,
+	},
+};
+#elif CONFIG_CPU_UNDERCLOCKING
+static struct msm_bus_vectors grp2d1_max_vectors[] = {
+	{
+		.src = MSM_BUS_MASTER_GRAPHICS_2D_CORE1,
+		.dst = MSM_BUS_SLAVE_EBI_CH0,
+		.ab = 0,
+		.ib = 990000000U,
 	},
 };
 #else
@@ -853,7 +871,35 @@ static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 	.init_level = 0,
 	.num_levels = 6,
 	.set_grp_async = NULL,
-	.idle_timeout = HZ/5,
+	.idle_timeout = HZ/12,
+	.nap_allowed = true,
+	.clk_map = KGSL_CLK_CORE | KGSL_CLK_IFACE | KGSL_CLK_MEM_IFACE,
+#ifdef CONFIG_MSM_BUS_SCALING
+	.bus_scale_table = &grp3d_bus_scale_pdata,
+#endif
+};
+#elif CONFIG_CPU_UNDERCLOCKING
+static struct kgsl_device_platform_data kgsl_3d0_pdata = {
+	.pwrlevel = {
+		{
+			.gpu_freq = 200000000,
+			.bus_freq = 2,
+			.io_fraction = 33,
+		},
+		{
+			.gpu_freq = 177778000,
+			.bus_freq = 1,
+			.io_fraction = 33,
+		},
+		{
+			.gpu_freq = 27000000,
+			.bus_freq = 0,
+		},
+	},
+	.init_level = 0,
+	.num_levels = 3,
+	.set_grp_async = NULL,
+	.idle_timeout = HZ/12,
 	.nap_allowed = true,
 	.clk_map = KGSL_CLK_CORE | KGSL_CLK_IFACE | KGSL_CLK_MEM_IFACE,
 #ifdef CONFIG_MSM_BUS_SCALING
@@ -890,14 +936,14 @@ static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 	.init_level = 0,
 	.num_levels = 5,
 	.set_grp_async = NULL,
-	.idle_timeout = HZ/5,
+	.idle_timeout = HZ/12,
 	.nap_allowed = true,
 	.clk_map = KGSL_CLK_CORE | KGSL_CLK_IFACE | KGSL_CLK_MEM_IFACE,
 #ifdef CONFIG_MSM_BUS_SCALING
 	.bus_scale_table = &grp3d_bus_scale_pdata,
 #endif
 };
-#endif /* GPU_TURBO_BOOST */
+#endif /* CONFIG_GPU_OVERCLOCKING */
 
 struct platform_device msm_kgsl_3d0 = {
 	.name = "kgsl-3d0",
@@ -942,6 +988,24 @@ static struct kgsl_device_platform_data kgsl_2d0_pdata = {
 	},
 	.init_level = 0,
 	.num_levels = 3,
+	.set_grp_async = NULL,
+	.idle_timeout = HZ/10,
+	.nap_allowed = true,
+	.clk_map = KGSL_CLK_CORE | KGSL_CLK_IFACE,
+#ifdef CONFIG_MSM_BUS_SCALING
+	.bus_scale_table = &grp2d0_bus_scale_pdata,
+#endif
+};
+#elif CONFIG_CPU_UNDERCLOCKING
+static struct kgsl_device_platform_data kgsl_2d0_pdata = {
+	.pwrlevel = {
+		{
+			.gpu_freq = 200000000,
+			.bus_freq = 0,
+		},
+	},
+	.init_level = 0,
+	.num_levels = 1,
 	.set_grp_async = NULL,
 	.idle_timeout = HZ/10,
 	.nap_allowed = true,
@@ -1017,6 +1081,33 @@ static struct kgsl_device_platform_data kgsl_2d1_pdata = {
 	},
 	.init_level = 0,
 	.num_levels = 3,
+	.set_grp_async = NULL,
+	.idle_timeout = HZ/10,
+	.nap_allowed = true,
+	.clk_map = KGSL_CLK_CORE | KGSL_CLK_IFACE,
+#if 0	// ICS ES2
+	.clk = {
+		.name = {
+			/* note: 2d clocks disabled on v1 */
+			.clk = "core_clk",
+			.pclk = "iface_clk",
+		},
+#endif
+
+#ifdef CONFIG_MSM_BUS_SCALING
+	.bus_scale_table = &grp2d1_bus_scale_pdata,
+#endif
+};
+#elif CONFIG_CPU_UNDERCLOCKING
+static struct kgsl_device_platform_data kgsl_2d1_pdata = {
+	.pwrlevel = {
+		{
+			.gpu_freq = 200000000,
+			.bus_freq = 0,
+		},
+	},
+	.init_level = 0,
+	.num_levels = 1,
 	.set_grp_async = NULL,
 	.idle_timeout = HZ/10,
 	.nap_allowed = true,
