@@ -850,11 +850,6 @@ static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 			.io_fraction = 10,
 		},
 		{
-			.gpu_freq = 228571000,
-			.bus_freq = 2,
-			.io_fraction = 33,
-		},
-		{
 			.gpu_freq = 200000000,
 			.bus_freq = 2,
 			.io_fraction = 33,
@@ -869,7 +864,7 @@ static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 		},
 	},
 	.init_level = 0,
-	.num_levels = 6,
+	.num_levels = 5,
 	.set_grp_async = NULL,
 	.idle_timeout = HZ/12,
 	.nap_allowed = true,
